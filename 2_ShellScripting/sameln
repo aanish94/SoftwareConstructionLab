@@ -1,0 +1,66 @@
+#! /bin/bash
+
+curDIR=$1
+#IFS='\n'
+cd $curDIR
+str=`(ls -a | grep '^\.' | sort) && (ls -a | grep -v '^\.'\
+| sort)`
+
+declare -a FILES
+let num=0
+
+for A in $str
+do
+    if [ -f $A ]
+    then 
+	FILES[$num]=$A
+	let num=num+1
+    fi
+done
+
+#for A in *; do
+#for B in *; do
+#    if [ -f $A ] && [ -f $B ] 
+#    then 
+#	echo "EQUAL"
+#	fi
+#done
+#done
+
+for (( j=0; j<$num; j++ ))
+do
+    for (( k=$j+1; k<$num; k++ ))
+    do
+	cmp -s ${FILES[$j]} ${FILES[$k]}
+	c=$?
+#	echo "C is now $c"
+#	echo "COMPARING: ${FILES[$j] AND ${FILES[$k]}"
+#	echo "HERE"
+	if [ $c -eq 0 ]
+	then
+        rm ${FILES[$k]}
+	ln ${FILES[$j]} ${FILES[$k]}
+	fi
+     done
+done
+
+
+
+#for file in $str; do
+#for file2 in $str; do   
+#    	if [ -f $file ] && [ -f $file2 ]
+#	then
+#	cmp -s $file $file2
+#	c=$?
+#	if [ $c -eq 0 ] && [ $file != $file2 ]
+#	then
+#		echo "equal $file $file2"
+	#	if [ $file2 != "$first" ]
+	#	then
+	#	rm $file2
+	#	ln $file $file2
+	#	fi
+#	fi
+#	fi
+#done
+#done

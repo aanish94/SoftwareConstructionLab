@@ -1,0 +1,5 @@
+#! /bin/bash
+
+sed '/<!DOCTYPE/,/Adopt<\/td>/d' - | sed '/<\/center><\/div>/,/<\/html>/d' | \
+sed 's/<[^>]*>//g' | sed '/^\s*$/d' | sed '2~2d' | tr '[:upper:]' '[:lower:]' \
+| sort -u
